@@ -130,29 +130,27 @@ export default function HomeLoanWizard() {
 
   return (
     <div className="layout">
-      {/* Topbar with clickable steps + progress */}
-      <div className="topbar">
-        <div className="topbar-steps" role="tablist" aria-label="Loan steps">
-          {steps.map((label, idx) => (
-            <button
-              key={label}
-              role="tab"
-              aria-selected={step === idx}
-              className={`step-chip ${step === idx ? "active" : ""}`}
-              onClick={() => setStep(idx)}
-            >
-              <span className="step-index">{idx + 1}</span>
-              <span className="step-label">{label}</span>
-            </button>
-          ))}
-        </div>
-        <div className="progress-wrap" aria-label="Progress">
-          <div className="progress-track">
-            <div className="progress-bar" style={{ width: `${progressPct}%` }} />
-          </div>
-          <span className="progress-text">{progressPct}%</span>
-        </div>
-      </div>
+      {/* Sidebar replaces Topbar */}
+<aside className="sidebar">
+  <div className="logo">
+    <img src="https://av.sc.com/corp-en/nr/content/images/Lockup-MonoBlack.png" alt="Standard Chartered" />
+  </div>
+  <div className="sidebar-steps" role="tablist" aria-label="Loan steps">
+    {steps.map((label, idx) => (
+      <button
+        key={label}
+        role="tab"
+        aria-selected={step === idx}
+        className={`step-chip ${step === idx ? "active" : ""}`}
+        onClick={() => setStep(idx)}
+      >
+        <span className="step-index">{idx + 1}</span>
+        <span className="step-label">{label}</span>
+      </button>
+    ))}
+  </div>
+
+</aside>
 
       {/* Main */}
       <main className="content">
@@ -162,6 +160,12 @@ export default function HomeLoanWizard() {
             <p>Step {step + 1} of {steps.length}</p>
           </div>
         </div>
+          <div className="progress-wrap">
+    <div className="progress-track">
+      <div className="progress-bar" style={{ width: `${progressPct}%` }} />
+    </div>
+    <span className="progress-text">{progressPct}%</span>
+  </div>
         <div className="card">
           {/* STEP 0: PERSONAL INFO */}
           {step === 0 && (
