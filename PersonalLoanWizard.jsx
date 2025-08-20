@@ -14,6 +14,7 @@ export default function PersonalLoanWizard() {
   ];
 
   const [step, setStep] = useState(0);
+    const [loanType, setLoanType] = useState("Personal Loan");
   const [submitted, setSubmitted] = useState(false);
   const refId = useMemo(() => Math.floor(Math.random() * 1000000), []);
 
@@ -108,23 +109,32 @@ export default function PersonalLoanWizard() {
 
   const progressPct = Math.round((step / (steps.length - 1)) * 100);
 
-  if (submitted) {
-    return (
-      <div className="content">
-        <div className="card">
-          <h2>🎉 Application Submitted!</h2>
-          <p>
-            Thank you {form.name}, your personal loan application has been submitted successfully.
-            Your reference ID is <strong>SCB-{refId}</strong>.
-          </p>
-          <p>
-            Our team will get back to you in <strong>2–3 working days</strong>. Please stay in touch with us via email or phone.
-          </p>
+if (submitted) {
+  return (
+    <div className="content">
+      <div className="card">
+        <h2>🎉 Application Submitted!</h2>
+        <p>
+          Thank you {form.name}, your loan application has been submitted successfully.
+          Your reference ID is <strong>SCB-{refId}</strong>.
+        </p>
+        <p>
+          Our team will get back to you in <strong>2–3 working days</strong>. Please stay in touch with us via email or phone.
+        </p>
+
+        {/* Back Button */}
+        <div className="form-navigation" style={{ marginTop: "20px", textAlign: "center" }}>
+          <button
+            className="btn btn-primary"
+            onClick={() => (window.location.href = "/apply-loan")}
+          >
+            Back to Loan Options
+          </button>
         </div>
       </div>
-    );
-  }
-
+    </div>
+  );
+}
   return (
     <div className="layout">
 {/* Sidebar replaces Topbar */}
@@ -146,12 +156,31 @@ export default function PersonalLoanWizard() {
       </button>
     ))}
   </div>
+{/* Footer */}
+<footer className="footer">
+  © {new Date().getFullYear()} Standard Chartered Bank. All rights reserved.
+</footer>
 
 </aside>
 
 
       {/* Main */}
       <main className="content">
+        {/* Profile Section */}
+<div className="profile-bar">
+  <div className="profile-info">
+    <span className="profile-name">Welcome, User</span>
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+      alt="Profile"
+      className="profile-avatar"
+    />
+  </div>
+</div>
+{/* Loan Type Display */}
+  <div className="loan-type-banner">
+    <h2>{loanType}</h2>
+  </div>
         <div className="page-header">
           <div>
             <h1>{steps[step]}</h1>
