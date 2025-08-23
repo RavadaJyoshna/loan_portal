@@ -67,16 +67,17 @@ export default function VehicleLoanWizard() {
     coRelation: "",
     coIncome: "",
 
-            Aadhar: null,
+    Aadhar: null,
     Pan:null,
-incomeProof: null,
-addressProof: null,
+    incomeProof: null,
+    addressProof: null,
 
     // Declarations
     hasJudgements: "no",
     bankrupt: "no",
     repossessed: "no",
     politicallyExposed: "no",
+    cibilConsent: false,
     agree: false,
   });
 
@@ -110,24 +111,72 @@ addressProof: null,
     });
   };
 
+  const calculateEMI = (amount, rate, tenure) => {
+    if (!amount || !rate || !tenure) return 0;
+    const principal = parseFloat(amount);
+    const annualInterestRate = parseFloat(rate);
+    const monthlyInterestRate = annualInterestRate / 12 / 100;
+    const loanTenureMonths = parseFloat(tenure) * 12;
+
+    const emi =
+      (principal *
+        monthlyInterestRate *
+        Math.pow(1 + monthlyInterestRate, loanTenureMonths)) /
+      (Math.pow(1 + monthlyInterestRate, loanTenureMonths) - 1);
+
+    return isNaN(emi) ? 0 : emi.toFixed(2);
+  };
+  const estimatedEmi = calculateEMI(form.loanAmount, form.interestRate, form.tenure);
 
   const progressPct = Math.round((step / (steps.length - 1)) * 100);
 
+  const validateStep = () => {
+    if (step === 0 && (!form.name || !form.email || !form.phone || !form.dob)) {
+      alert("Please fill out all required personal information.");
+      return false;
+    }
+    if (step === 1 && (!form.employment || !form.monthlyIncome)) {
+      alert("Please fill out all required employment information.");
+      return false;
+    }
+    if (step === 2 && (!form.loanAmount || !form.tenure || !form.downPayment)) {
+      alert("Please fill out all required loan details.");
+      return false;
+    }
+    if (step === 4 && (!form.vehicleMake || !form.vehicleModel || !form.vehiclePrice)) {
+      alert("Please fill out all required vehicle information.");
+      return false;
+    }
+    if (step === 6 && !form.cibilConsent) {
+      alert("Please consent to the CIBIL credit report check to proceed.");
+      return false;
+    }
+    return true;
+  };
+
+
 if (submitted) {
   return (
-    <div className="content">
-      <div className="card">
-        <h2>🎉 Application Submitted!</h2>
-        <p>
-          Thank you {form.name}, your loan application has been submitted successfully.
-          Your reference ID is <strong>SCB-{refId}</strong>.
+    <div className="content success-page">
+      <div className="card submission-card">
+        <div className="submission-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-8.82"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h2 className="submission-title">Application Submitted Successfully!</h2>
+        <p className="submission-message">
+          Thank you, **{form.name}**. Your loan application has been received.
         </p>
-        <p>
-          Our team will get back to you in <strong>2–3 working days</strong>. Please stay in touch with us via email or phone.
+        <div className="ref-id-box">
+          <p>Your Reference ID</p>
+          <strong>SCB-{refId}</strong>
+        </div>
+        <p className="contact-info">
+          Our team will review your application and get back to you within 2–3 business days. Please keep an eye on your email for updates.
         </p>
-
-        {/* Back Button */}
-        <div className="form-navigation" style={{ marginTop: "20px", textAlign: "center" }}>
+        <div className="form-navigation" style={{ marginTop: "30px", textAlign: "center" }}>
           <button
             className="btn btn-primary"
             onClick={() => (window.location.href = "/apply-loan")}
@@ -139,38 +188,14 @@ if (submitted) {
     </div>
   );
 }
+
   return (
     <div className="layout">
-{/* Sidebar replaces Topbar */}
-<aside className="sidebar">
+{/* New Topbar */}
+<div className="topbar">
   <div className="logo">
     <img src="https://av.sc.com/corp-en/nr/content/images/sc-lock-up-english-grey-rgb.png" alt="Standard Chartered" />
   </div>
-  <div className="sidebar-steps" role="tablist" aria-label="Loan steps">
-    {steps.map((label, idx) => (
-      <button
-        key={label}
-        role="tab"
-        aria-selected={step === idx}
-        className={`step-chip ${step === idx ? "active" : ""}`}
-        onClick={() => setStep(idx)}
-      >
-        <span className="step-index">{idx + 1}</span>
-        <span className="step-label">{label}</span>
-      </button>
-    ))}
-  </div>
-{/* Footer */}
-<footer className="footer">
-  © {new Date().getFullYear()} Standard Chartered Bank. All rights reserved.
-</footer>
-
-</aside>
-
-      {/* Main */}
-      <main className="content">
-        {/* Profile Section */}
-<div className="profile-bar">
   <div className="profile-info">
     <span className="profile-name">Welcome, User</span>
     <img
@@ -180,6 +205,33 @@ if (submitted) {
     />
   </div>
 </div>
+
+<div className="main-container">
+
+      {/* Sidebar with steps */}
+      <aside className="sidebar">
+        <div className="sidebar-steps" role="tablist" aria-label="Loan steps">
+          {steps.map((label, idx) => (
+            <button
+              key={label}
+              role="tab"
+              aria-selected={step === idx}
+              className={`step-chip ${step === idx ? "active" : ""}`}
+              onClick={() => setStep(idx)}
+            >
+              <span className="step-index">{idx + 1}</span>
+              <span className="step-label">{label}</span>
+            </button>
+          ))}
+        </div>
+        {/* Footer */}
+        <footer className="footer">
+          © {new Date().getFullYear()} Standard Chartered Bank. All rights reserved.
+        </footer>
+      </aside>
+
+      {/* Main */}
+      <main className="content">
 {/* Loan Type Display */}
   <div className="loan-type-banner">
     <h2>{loanType}</h2>
@@ -188,7 +240,6 @@ if (submitted) {
           <div>
             <h1>{steps[step]}</h1>
             <p>Step {step + 1} of {steps.length}</p>
-            <p className="loan-type-label">{loanType} Loan</p>
           </div>
         </div>
           <div className="progress-wrap">
@@ -198,6 +249,7 @@ if (submitted) {
     <span className="progress-text">{progressPct}%</span>
   </div>
         <div className="card">
+          
           {/* STEP 0: PERSONAL INFO */}
           {step === 0 && (
             <div className="form-step active grid-2">
@@ -315,14 +367,23 @@ if (submitted) {
 
           {/* STEP 2: LOAN DETAILS */}
           {step === 2 && (
-            <div className="form-step active grid-2">
-              <div className="field">
-                <label>Desired Loan Amount (₹)</label>
-                <input name="loanAmount" inputMode="numeric" value={form.loanAmount} onChange={handleChange} />
+            <div className="form-step active">
+              <div className="form-row">
+                <div className="field">
+                  <label>Desired Loan Amount (₹)</label>
+                  <input name="loanAmount" inputMode="numeric" value={form.loanAmount} onChange={handleChange} />
+                </div>
+                <div className="field">
+                  <label>Tenure (Years)</label>
+                  <input name="tenure" inputMode="numeric" value={form.tenure} onChange={handleChange} />
+                </div>
               </div>
-              <div className="field">
-                <label>Tenure (Years)</label>
-                <input name="tenure" inputMode="numeric" value={form.tenure} onChange={handleChange} />
+
+              <div className="emi-results">
+                <div className="emi-line">
+                  <span>Estimated Monthly EMI</span>
+                  <strong>₹ {Number(estimatedEmi).toLocaleString("en-IN")}</strong>
+                </div>
               </div>
               <div className="field">
                 <label>Interest Rate (% p.a.)</label>
@@ -352,19 +413,11 @@ if (submitted) {
                 <div className="grid-3" key={`asset-${i}`}>
                   <div className="field">
                     <label>Type</label>
-                    <input
-                      value={row.type}
-                      onChange={(e) => handleArrayChange("assets", i, "type", e.target.value)}
-                      placeholder="Savings, FD, Mutual Funds…"
-                    />
+                    <input value={row.type} onChange={(e) => handleArrayChange("assets", i, "type", e.target.value)} placeholder="Savings, FD, Mutual Funds…" />
                   </div>
                   <div className="field">
                     <label>Amount (₹)</label>
-                    <input
-                      inputMode="numeric"
-                      value={row.amount}
-                      onChange={(e) => handleArrayChange("assets", i, "amount", e.target.value)}
-                    />
+                    <input inputMode="numeric" value={row.amount} onChange={(e) => handleArrayChange("assets", i, "amount", e.target.value)} />
                   </div>
                   <div className="field">
                     <label>&nbsp;</label>
@@ -390,27 +443,15 @@ if (submitted) {
                   <div className="grid-3" key={`debt-${i}`}>
                     <div className="field">
                       <label>Debt Type</label>
-                      <input
-                        value={row.type}
-                        onChange={(e) => handleArrayChange("liabilities", i, "type", e.target.value)}
-                        placeholder="Credit Card, Auto Loan…"
-                      />
+                      <input value={row.type} onChange={(e) => handleArrayChange("liabilities", i, "type", e.target.value)} placeholder="Credit Card, Auto Loan…" />
                     </div>
                     <div className="field">
                       <label>Outstanding (₹)</label>
-                      <input
-                        inputMode="numeric"
-                        value={row.amount}
-                        onChange={(e) => handleArrayChange("liabilities", i, "amount", e.target.value)}
-                      />
+                      <input inputMode="numeric" value={row.amount} onChange={(e) => handleArrayChange("liabilities", i, "amount", e.target.value)} />
                     </div>
                     <div className="field">
                       <label>Monthly EMI (₹)</label>
-                      <input
-                        inputMode="numeric"
-                        value={row.emi}
-                        onChange={(e) => handleArrayChange("liabilities", i, "emi", e.target.value)}
-                      />
+                      <input inputMode="numeric" value={row.emi} onChange={(e) => handleArrayChange("liabilities", i, "emi", e.target.value)} />
                     </div>
                     <div className="field">
                       <label>&nbsp;</label>
@@ -448,7 +489,7 @@ if (submitted) {
                 <input name="vehicleYear" inputMode="numeric" value={form.vehicleYear} onChange={handleChange} />
               </div>
               <div className="field">
-                <label>Price (₹)</label>
+                <label>Purchase Price (₹)</label>
                 <input name="vehiclePrice" inputMode="numeric" value={form.vehiclePrice} onChange={handleChange} />
               </div>
               <div className="field">
@@ -485,85 +526,78 @@ if (submitted) {
             </div>
           )}
 
-          {/* STEP 5: DECLARATIONS */}
-          {step === 6 && (
-            <div className="form-step active grid-2">
+          {/* STEP 5: DOCUMENTS UPLOAD */}
+          {step === 5 && (
+            <div className="form-step active">
+              <h3>Upload Documents</h3>
               <div className="field">
-                <label>Any court judgements against you?</label>
-                <select name="hasJudgements" value={form.hasJudgements} onChange={handleChange}>
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select>
+                <label>ID Proof (PAN, Aadhaar, Passport)</label>
+                <input type="file" name="idProof" accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={(e) => handleChange({ target: { name: "idProof", value: e.target.files[0] } })} />
+                {form.idProof && <span>{form.idProof.name}</span>}
               </div>
               <div className="field">
-                <label>Declared bankruptcy in last 7 years?</label>
-                <select name="bankrupt" value={form.bankrupt} onChange={handleChange}>
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select>
+                <label>Income Proof (Salary Slip / ITR)</label>
+                <input type="file" name="incomeProof" accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={(e) => handleChange({ target: { name: "incomeProof", value: e.target.files[0] } })} />
+                {form.incomeProof && <span>{form.incomeProof.name}</span>}
               </div>
               <div className="field">
-                <label>Vehicle repossessed in past?</label>
-                <select name="repossessed" value={form.repossessed} onChange={handleChange}>
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select>
-              </div>
-              <div className="field">
-                <label>Politically exposed person (PEP)?</label>
-                <select name="politicallyExposed" value={form.politicallyExposed} onChange={handleChange}>
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select>
-              </div>
-              <div className="consent" style={{ marginTop: 12 }}>
-                <input type="checkbox" id="consent" name="agree" checked={form.agree} onChange={handleChange} />{" "}
-                <label htmlFor="consent">I confirm all details are true and authorize verification.</label>
+                <label>Address Proof</label>
+                <input type="file" name="addressProof" accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={(e) => handleChange({ target: { name: "addressProof", value: e.target.files[0] } })} />
+                {form.addressProof && <span>{form.addressProof.name}</span>}
               </div>
             </div>
           )}
 
-{/* STEP 5: DOCUMENTS UPLOAD */}
-{step === 5 && (
-  <div className="form-step active">
-    <h3>Upload Documents</h3>
-
-    <div className="field">
-      <label>ID Proof (PAN, Aadhaar, Passport)</label>
-      <input
-        type="file"
-        name="idProof"
-        accept=".pdf,.jpg,.jpeg,.png"
-        onChange={(e) => handleChange({ target: { name: "idProof", value: e.target.files[0] } })}
-      />
-      {form.idProof && <span>{form.idProof.name}</span>}
-    </div>
-
-    <div className="field">
-      <label>Income Proof (Salary Slip / ITR)</label>
-      <input
-        type="file"
-        name="incomeProof"
-        accept=".pdf,.jpg,.jpeg,.png"
-        onChange={(e) => handleChange({ target: { name: "incomeProof", value: e.target.files[0] } })}
-      />
-      {form.incomeProof && <span>{form.incomeProof.name}</span>}
-    </div>
-
-    <div className="field">
-      <label>Address Proof</label>
-      <input
-        type="file"
-        name="addressProof"
-        accept=".pdf,.jpg,.jpeg,.png"
-        onChange={(e) => handleChange({ target: { name: "addressProof", value: e.target.files[0] } })}
-      />
-      {form.addressProof && <span>{form.addressProof.name}</span>}
-    </div>
-
-  </div>
-)}
-
+          {/* STEP 6: DECLARATIONS */}
+          {step === 6 && (
+            <div className="form-step active">
+              <div className="grid-2">
+                <div className="field">
+                  <label>Any outstanding judgments?</label>
+                  <select name="hasJudgements" value={form.hasJudgements} onChange={handleChange}>
+                    <option value="no">No</option><option value="yes">Yes</option>
+                  </select>
+                </div>
+                <div className="field">
+                  <label>Declared bankruptcy in last 7 years?</label>
+                  <select name="bankrupt" value={form.bankrupt} onChange={handleChange}>
+                    <option value="no">No</option><option value="yes">Yes</option>
+                  </select>
+                </div>
+                <div className="field">
+                  <label>Vehicle repossessed in last 7 years?</label>
+                  <select name="repossessed" value={form.repossessed} onChange={handleChange}>
+                    <option value="no">No</option><option value="yes">Yes</option>
+                  </select>
+                </div>
+                <div className="field">
+                  <label>Politically Exposed Person?</label>
+                  <select name="politicallyExposed" value={form.politicallyExposed} onChange={handleChange}>
+                    <option value="no">No</option><option value="yes">Yes</option>
+                  </select>
+                </div>
+              </div>
+              <div className="field">
+                <input
+                  type="checkbox"
+                  id="cibilConsent"
+                  name="cibilConsent"
+                  checked={form.cibilConsent}
+                  onChange={handleChange}
+                />
+                <label htmlFor="cibilConsent" style={{ fontSize: "14px" }}>
+                  I authorize Standard Chartered Bank to retrieve my credit report from CIBIL and other credit bureaus.
+                </label>
+              </div>
+              <div className="consent" style={{ marginTop: 12 }}>
+                <input type="checkbox" id="agree" name="agree" checked={form.agree} onChange={handleChange} />{" "}
+                <label htmlFor="agree">I confirm all details are true and authorize verification.</label>
+              </div>
+            </div>
+          )}
 
           {/* STEP 7: REVIEW */}
           {step === 7 && (
@@ -586,8 +620,8 @@ if (submitted) {
                 <li><span>Tenure</span><span>{form.tenure} years</span></li>
                 <li><span>Interest</span><span>{form.interestRate}% p.a.</span></li>
                 <li><span>Down Payment</span><span>₹ {Number(form.downPayment || 0).toLocaleString("en-IN")}</span></li>
-                <li><span>Vehicle</span><span>{form.vehicleType} • {form.vehicleMake} {form.vehicleModel} ({form.vehicleYear})</span></li>
-                <li><span>Vehicle Price</span><span>₹ {Number(form.vehiclePrice || 0).toLocaleString("en-IN")}</span></li>
+                <li><span>Vehicle</span><span>{form.vehicleMake} {form.vehicleModel} ({form.vehicleYear})</span></li>
+                <li><span>Price</span><span>₹ {Number(form.vehiclePrice || 0).toLocaleString("en-IN")}</span></li>
                 <li><span>New/Used</span><span>{form.newOrUsed}</span></li>
                 <li><span>Declarations</span><span>
                   Judgements: {form.hasJudgements} • Bankruptcy: {form.bankrupt} • Repossessed: {form.repossessed} • PEP: {form.politicallyExposed}
@@ -602,25 +636,33 @@ if (submitted) {
 
           {/* NAVIGATION */}
           <div className="form-navigation">
-            <button
-              className="btn btn-ghost"
-              disabled={step === 0}
-              onClick={() => setStep((s) => Math.max(0, s - 1))}
-            >
+            <button className="btn btn-ghost" disabled={step === 0} onClick={() => setStep((s) => Math.max(0, s - 1))}>
               Back
             </button>
             {step < steps.length - 1 ? (
-              <button className="btn btn-primary" onClick={() => setStep((s) => Math.min(steps.length - 1, s + 1))}>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  if (validateStep()) {
+                    setStep((s) => Math.min(steps.length - 1, s + 1));
+                  }
+                }}
+              >
                 Next
               </button>
             ) : (
-              <button className="btn btn-primary" disabled={!form.agree} onClick={() => setSubmitted(true)}>
+              <button
+                className="btn btn-primary"
+                disabled={!form.agree}
+                onClick={() => setSubmitted(true)}
+              >
                 Submit Application
               </button>
             )}
           </div>
         </div>
       </main>
+</div>
     </div>
   );
 }
