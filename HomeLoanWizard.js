@@ -81,6 +81,7 @@ addressProof: null,
     bankrupt: "no",
     foreclosed: "no",
     politicallyExposed: "no",
+    cibilConsent: false,
     agree: false,
   });
 
@@ -109,24 +110,72 @@ addressProof: null,
     });
   };
 
+  const calculateEMI = (amount, rate, tenure) => {
+    if (!amount || !rate || !tenure) return 0;
+    const principal = parseFloat(amount);
+    const annualInterestRate = parseFloat(rate);
+    const monthlyInterestRate = annualInterestRate / 12 / 100;
+    const loanTenureMonths = parseFloat(tenure) * 12;
+
+    const emi =
+      (principal *
+        monthlyInterestRate *
+        Math.pow(1 + monthlyInterestRate, loanTenureMonths)) /
+      (Math.pow(1 + monthlyInterestRate, loanTenureMonths) - 1);
+
+    return isNaN(emi) ? 0 : emi.toFixed(2);
+  };
+  const estimatedEmi = calculateEMI(form.loanAmount, form.interestRate, form.tenure);
 
   const progressPct = Math.round((step / (steps.length - 1)) * 100);
 
+  const validateStep = () => {
+    if (step === 0 && (!form.name || !form.email || !form.phone || !form.dob)) {
+      alert("Please fill out all required personal information.");
+      return false;
+    }
+    if (step === 1 && (!form.employment || !form.monthlyIncome)) {
+      alert("Please fill out all required employment information.");
+      return false;
+    }
+    if (step === 2 && (!form.loanAmount || !form.tenure || !form.downPayment)) {
+      alert("Please fill out all required loan details.");
+      return false;
+    }
+    if (step === 4 && (!form.propertyType || !form.propertyValue)) {
+      alert("Please fill out all required property information.");
+      return false;
+    }
+    if (step === 6 && !form.cibilConsent) {
+      alert("Please consent to the CIBIL credit report check to proceed.");
+      return false;
+    }
+    return true;
+  };
+
+
 if (submitted) {
   return (
-    <div className="content">
-      <div className="card">
-        <h2>🎉 Application Submitted!</h2>
-        <p>
-          Thank you {form.name}, your loan application has been submitted successfully.
-          Your reference ID is <strong>SCB-{refId}</strong>.
+    <div className="content success-page">
+      <div className="card submission-card">
+        <div className="submission-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-8.82"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h2 className="submission-title">Application Submitted Successfully!</h2>
+        <p className="submission-message">
+          Thank you, **{form.name}**. Your loan application has been received.
         </p>
-        <p>
-          Our team will get back to you in <strong>2–3 working days</strong>. Please stay in touch with us via email or phone.
+        <div className="ref-id-box">
+          <p>Your Reference ID</p>
+          <strong>SCB-{refId}</strong>
+        </div>
+        <p className="contact-info">
+          Our team will review your application and get back to you within 2–3 business days. Please keep an eye on your email for updates.
         </p>
-
-        {/* Back Button */}
-        <div className="form-navigation" style={{ marginTop: "20px", textAlign: "center" }}>
+        <div className="form-navigation" style={{ marginTop: "30px", textAlign: "center" }}>
           <button
             className="btn btn-primary"
             onClick={() => (window.location.href = "/apply-loan")}
@@ -139,40 +188,14 @@ if (submitted) {
   );
 }
 
-
   return (
     <div className="layout">
-      {/* Sidebar replaces Topbar */}
-<aside className="sidebar">
+      
+      {/* New Topbar */}
+<div className="topbar">
   <div className="logo">
     <img src="https://av.sc.com/corp-en/nr/content/images/sc-lock-up-english-grey-rgb.png" alt="Standard Chartered" />
   </div>
-  <div className="sidebar-steps" role="tablist" aria-label="Loan steps">
-    {steps.map((label, idx) => (
-      <button
-        key={label}
-        role="tab"
-        aria-selected={step === idx}
-        className={`step-chip ${step === idx ? "active" : ""}`}
-        onClick={() => setStep(idx)}
-      >
-        <span className="step-index">{idx + 1}</span>
-        <span className="step-label">{label}</span>
-      </button>
-    ))}
-    {/* Footer */}
-<footer className="footer">
-  © {new Date().getFullYear()} Standard Chartered Bank. All rights reserved.
-</footer>
-
-  </div>
-
-</aside>
-
-      {/* Main */}
-      <main className="content">
-        {/* Profile Section */}
-<div className="profile-bar">
   <div className="profile-info">
     <span className="profile-name">Welcome, User</span>
     <img
@@ -182,6 +205,33 @@ if (submitted) {
     />
   </div>
 </div>
+
+<div className="main-container">
+
+      {/* Sidebar with steps */}
+      <aside className="sidebar">
+        <div className="sidebar-steps" role="tablist" aria-label="Loan steps">
+          {steps.map((label, idx) => (
+            <button
+              key={label}
+              role="tab"
+              aria-selected={step === idx}
+              className={`step-chip ${step === idx ? "active" : ""}`}
+              onClick={() => setStep(idx)}
+            >
+              <span className="step-index">{idx + 1}</span>
+              <span className="step-label">{label}</span>
+            </button>
+          ))}
+        </div>
+        {/* Footer */}
+        <footer className="footer">
+          © {new Date().getFullYear()} Standard Chartered Bank. All rights reserved.
+        </footer>
+      </aside>
+
+      {/* Main */}
+      <main className="content">
 {/* Loan Type Display */}
   <div className="loan-type-banner">
     <h2>{loanType}</h2>
@@ -199,8 +249,6 @@ if (submitted) {
     <span className="progress-text">{progressPct}%</span>
   </div>
         <div className="card">
-          {/* Loan Type Display */}
-
           {/* STEP 0: PERSONAL INFO */}
           {step === 0 && (
             <div className="form-step active grid-2">
@@ -343,6 +391,14 @@ if (submitted) {
       </div>
     </div>
 
+    {/* Dynamic EMI calculation display */}
+    <div className="emi-results">
+        <div className="emi-line">
+          <span>Estimated Monthly EMI</span>
+          <strong>₹ {Number(estimatedEmi).toLocaleString("en-IN")}</strong>
+        </div>
+      </div>
+
     {/* Interest Rate (single full-width field) */}
     <div className="field">
       <label>Interest Rate (% p.a.)</label>
@@ -472,11 +528,6 @@ if (submitted) {
                         <button className="btn btn-ghost" type="button" onClick={() => addRow("liabilities", { type: "", amount: "", emi: "" })}>+ Add</button>
                         <button className="btn btn-outline" type="button" onClick={() => removeRow("liabilities", i)}>Remove</button>
                       </div>
-                      <div className="button-group">
-  <button type="button">+ Add</button>
-  <button type="button">Remove</button>
-</div>
-
                     </div>
                   </div>
                 ))}
@@ -618,6 +669,18 @@ if (submitted) {
                 <input type="checkbox" id="consent" name="agree" checked={form.agree} onChange={handleChange} />{" "}
                 <label htmlFor="consent">I confirm all details are true and authorize verification.</label>
               </div>
+              <div className="field">
+                <input
+                  type="checkbox"
+                  id="cibilConsent"
+                  name="cibilConsent"
+                  checked={form.cibilConsent}
+                  onChange={handleChange}
+                />
+                <label htmlFor="cibilConsent" style={{ fontSize: "14px" }}>
+                  I authorize Standard Chartered Bank to retrieve my credit report from CIBIL and other credit bureaus.
+                </label>
+              </div>
             </div>
           )}
 
@@ -668,7 +731,14 @@ if (submitted) {
               Back
             </button>
             {step < steps.length - 1 ? (
-              <button className="btn btn-primary" onClick={() => setStep((s) => Math.min(steps.length - 1, s + 1))}>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  if (validateStep()) {
+                    setStep((s) => Math.min(steps.length - 1, s + 1));
+                  }
+                }}
+              >
                 Next
               </button>
             ) : (
@@ -683,6 +753,7 @@ if (submitted) {
           </div>
         </div>
       </main>
+</div>
     </div>
   );
 }
