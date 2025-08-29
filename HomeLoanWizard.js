@@ -4,21 +4,59 @@ import "../LoanWizardFull.css";
 export default function HomeLoanWizard() {
   const steps = [
     "Personal Info",
+    "Contact & Reference",
     "Employment",
     "Loan Details",
     "Financials",
     "Property Info",
     "Documents Upload",
-    "Declarations",
     "Review",
+  ];
+
+  // List of Indian states for the dropdown
+  const indianStates = [
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chhattisgarh",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Odisha",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal",
+    "Andaman and Nicobar Islands",
+    "Chandigarh",
+    "Dadra and Nagar Haveli and Daman and Diu",
+    "Delhi",
+    "Lakshadweep",
+    "Puducherry",
   ];
 
 
   const [step, setStep] = useState(0);
-  const [loanType, setLoanType] = useState("Home Loan"); 
-// 👆 you can change this dynamically based on what user selects on /apply-loan page
+  const [loanType, setLoanType] = useState("Home Loan");
   const [submitted, setSubmitted] = useState(false);
   const refId = useMemo(() => Math.floor(Math.random() * 1000000), []);
+
 
   const [form, setForm] = useState({
     // Personal
@@ -30,11 +68,18 @@ export default function HomeLoanWizard() {
     dependents: "",
     idType: "PAN",
     idNumber: "",
+    gender: "",
+
+    // Contact & Reference
     residenceType: "",
     address: "",
     city: "",
     state: "",
     pincode: "",
+    refName: "",
+    refRelation: "",
+    refContact: "",
+    refAddress: "",
 
     // Employment
     employment: "",
@@ -70,19 +115,12 @@ export default function HomeLoanWizard() {
     coRelation: "",
     coIncome: "",
 
-    Aadhar: null,
-    Pan:null,
-incomeProof: null,
-addressProof: null,
+    // Documents
+    idProof: null,
+    incomeProof: null,
+    addressProof: null,
+    saleAgreement: null,
 
-
-    // Declarations
-    hasJudgements: "no",
-    bankrupt: "no",
-    foreclosed: "no",
-    politicallyExposed: "no",
-    cibilConsent: false,
-    agree: false,
   });
 
   const handleChange = (e) => {
@@ -115,7 +153,7 @@ addressProof: null,
     const principal = parseFloat(amount);
     const annualInterestRate = parseFloat(rate);
     const monthlyInterestRate = annualInterestRate / 12 / 100;
-    const loanTenureMonths = parseFloat(tenure) * 12;
+    const loanTenureMonths = parseFloat(tenure);
 
     const emi =
       (principal *
@@ -134,20 +172,20 @@ addressProof: null,
       alert("Please fill out all required personal information.");
       return false;
     }
-    if (step === 1 && (!form.employment || !form.monthlyIncome)) {
+    if (step === 1 && (!form.address || !form.city || !form.refName)) {
+      alert("Please fill out all required contact and reference information.");
+      return false;
+    }
+    if (step === 2 && (!form.employment || !form.monthlyIncome)) {
       alert("Please fill out all required employment information.");
       return false;
     }
-    if (step === 2 && (!form.loanAmount || !form.tenure || !form.downPayment)) {
+    if (step === 3 && (!form.loanAmount || !form.tenure || !form.downPayment)) {
       alert("Please fill out all required loan details.");
       return false;
     }
-    if (step === 4 && (!form.propertyType || !form.propertyValue)) {
+    if (step === 5 && (!form.propertyType || !form.propertyValue)) {
       alert("Please fill out all required property information.");
-      return false;
-    }
-    if (step === 6 && !form.cibilConsent) {
-      alert("Please consent to the CIBIL credit report check to proceed.");
       return false;
     }
     return true;
@@ -193,7 +231,7 @@ if (submitted) {
       
       {/* New Topbar */}
 <div className="topbar">
-  <div className="logo">
+  <div className="logo" onClick={() => (window.location.href = "/apply-loan")}>
     <img src="https://av.sc.com/corp-en/nr/content/images/sc-lock-up-english-grey-rgb.png" alt="Standard Chartered" />
   </div>
   <div className="profile-info">
@@ -269,6 +307,15 @@ if (submitted) {
                 <input name="dob" type="date" value={form.dob} onChange={handleChange} />
               </div>
               <div className="field">
+                <label>Gender</label>
+                <select name="gender" value={form.gender} onChange={handleChange}>
+                  <option value="">Select</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div className="field">
                 <label>Marital Status</label>
                 <select name="maritalStatus" value={form.maritalStatus} onChange={handleChange}>
                   <option value="">Select</option>
@@ -295,7 +342,12 @@ if (submitted) {
                 <label>ID Number</label>
                 <input name="idNumber" value={form.idNumber} onChange={handleChange} placeholder="e.g., ABCDE1234F" />
               </div>
+            </div>
+          )}
 
+          {/* NEW STEP 1: CONTACT & REFERENCE */}
+          {step === 1 && (
+            <div className="form-step active grid-2">
               <div className="field">
                 <label>Residence Type</label>
                 <select name="residenceType" value={form.residenceType} onChange={handleChange}>
@@ -316,17 +368,41 @@ if (submitted) {
               </div>
               <div className="field">
                 <label>State</label>
-                <input name="state" value={form.state} onChange={handleChange} />
+                <select name="state" value={form.state} onChange={handleChange}>
+                  <option value="">Select State</option>
+                  {indianStates.map((state) => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
               </div>
               <div className="field">
                 <label>Pincode</label>
                 <input name="pincode" inputMode="numeric" value={form.pincode} onChange={handleChange} />
               </div>
+              <hr style={{ gridColumn: "1 / -1" }}/>
+
+              <h3>Reference Details</h3>
+              <div className="field">
+                <label>Reference Name</label>
+                <input name="refName" value={form.refName} onChange={handleChange} />
+              </div>
+              <div className="field">
+                <label>Relationship</label>
+                <input name="refRelation" value={form.refRelation} onChange={handleChange} />
+              </div>
+              <div className="field">
+                <label>Contact Number</label>
+                <input name="refContact" value={form.refContact} onChange={handleChange} />
+              </div>
+              <div className="field">
+                <label>Address</label>
+                <input name="refAddress" value={form.refAddress} onChange={handleChange} />
+              </div>
             </div>
           )}
-
-          {/* STEP 1: EMPLOYMENT */}
-          {step === 1 && (
+          
+          {/* STEP 2: EMPLOYMENT */}
+          {step === 2 && (
             <div className="form-step active grid-2">
               <div className="field">
                 <label>Employment Type</label>
@@ -365,8 +441,8 @@ if (submitted) {
             </div>
           )}
 
-          {/* STEP 2: LOAN DETAILS */}
-         {step === 2 && (
+          {/* STEP 3: LOAN DETAILS */}
+         {step === 3 && (
   <div className="form-step active">
     
     {/* Loan Amount + Tenure */}
@@ -381,7 +457,7 @@ if (submitted) {
         />
       </div>
       <div className="field">
-        <label>Tenure (Years)</label>
+        <label>Tenure (Months)</label>
         <input
           name="tenure"
           inputMode="numeric"
@@ -454,8 +530,8 @@ if (submitted) {
 )}
 
 
-          {/* STEP 3: FINANCIALS */}
-          {step === 3 && (
+          {/* STEP 4: FINANCIALS */}
+          {step === 4 && (
             <div className="form-step active">
               <h3>Assets</h3>
               {form.assets.map((row, i) => (
@@ -534,8 +610,8 @@ if (submitted) {
             </div>
           )}
 
-          {/* STEP 4: PROPERTY INFO */}
-          {step === 4 && (
+          {/* STEP 5: PROPERTY INFO */}
+          {step === 5 && (
             <div className="form-step active grid-2">
               <div className="field">
                 <label>Property Type</label>
@@ -559,7 +635,12 @@ if (submitted) {
               </div>
               <div className="field">
                 <label>State</label>
-                <input name="propertyState" value={form.propertyState} onChange={handleChange} />
+                <select name="propertyState" value={form.propertyState} onChange={handleChange}>
+                  <option value="">Select State</option>
+                  {indianStates.map((state) => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
               </div>
               <div className="field">
                 <label>Pincode</label>
@@ -591,8 +672,8 @@ if (submitted) {
               )}
             </div>
           )}
-{/* STEP 5: DOCUMENTS UPLOAD */}
-{step === 5 && (
+{/* STEP 6: DOCUMENTS UPLOAD */}
+{step === 6 && (
   <div className="form-step active">
     <h3>Upload Documents</h3>
 
@@ -629,63 +710,18 @@ if (submitted) {
       {form.addressProof && <span>{form.addressProof.name}</span>}
     </div>
 
+    <div className="field">
+      <label>Sale Agreement (PDF)</label>
+      <input
+        type="file"
+        name="saleAgreement"
+        accept=".pdf"
+        onChange={(e) => handleChange({ target: { name: "saleAgreement", value: e.target.files[0] } })}
+      />
+      {form.saleAgreement && <span>{form.saleAgreement.name}</span>}
+    </div>
   </div>
 )}
-
-          {/* STEP 6: DECLARATIONS */}
-          {step === 6 && (
-            <div className="form-step active">
-              <div className="grid-2">
-                <div className="field">
-                  <label>Any outstanding judgments?</label>
-                  <select name="hasJudgements" value={form.hasJudgements} onChange={handleChange}>
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                  </select>
-                </div>
-                <div className="field">
-                  <label>Declared bankruptcy in last 7 years?</label>
-                  <select name="bankrupt" value={form.bankrupt} onChange={handleChange}>
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                  </select>
-                </div>
-                <div className="field">
-                  <label>Property foreclosed in last 7 years?</label>
-                  <select name="foreclosed" value={form.foreclosed} onChange={handleChange}>
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                  </select>
-                </div>
-                <div className="field">
-                  <label>Politically Exposed Person?</label>
-                  <select name="politicallyExposed" value={form.politicallyExposed} onChange={handleChange}>
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                  </select>
-                </div>
-              </div>
-              <div className="consent" style={{ marginTop: 12 }}>
-                <input type="checkbox" id="consent" name="agree" checked={form.agree} onChange={handleChange} />{" "}
-                <label htmlFor="consent">I confirm all details are true and authorize verification.</label>
-              </div>
-              <div className="field">
-                <input
-                  type="checkbox"
-                  id="cibilConsent"
-                  name="cibilConsent"
-                  checked={form.cibilConsent}
-                  onChange={handleChange}
-                />
-                <label htmlFor="cibilConsent" style={{ fontSize: "14px" }}>
-                  I authorize Standard Chartered Bank to retrieve my credit report from CIBIL and other credit bureaus.
-                </label>
-              </div>
-            </div>
-          )}
-
-
-
           {/* STEP 7: REVIEW */}
           {step === 7 && (
             <div className="form-step active review">
@@ -695,29 +731,30 @@ if (submitted) {
                 <li><span>Email</span><span>{form.email}</span></li>
                 <li><span>Phone</span><span>{form.phone}</span></li>
                 <li><span>DOB</span><span>{form.dob}</span></li>
+                <li><span>Gender</span><span>{form.gender}</span></li>
                 <li><span>Marital Status</span><span>{form.maritalStatus}</span></li>
-                <li><span>Dependents</span><span>{form.dependents}</span></li>
                 <li><span>ID</span><span>{form.idType} • {form.idNumber}</span></li>
+                <li><span>Dependents</span><span>{form.dependents}</span></li>
                 <li><span>Address</span><span>{form.address}, {form.city}, {form.state} {form.pincode}</span></li>
+                <li><span>Reference</span><span>{form.refName} ({form.refRelation}) - {form.refContact} - {form.refAddress}</span></li>
                 <li><span>Employment</span><span>{form.employment}</span></li>
                 <li><span>Employer</span><span>{form.employerName}</span></li>
                 <li><span>Income</span><span>₹ {Number(form.monthlyIncome || 0).toLocaleString("en-IN")}</span></li>
                 <li><span>Other Income</span><span>₹ {Number(form.otherIncome || 0).toLocaleString("en-IN")}</span></li>
                 <li><span>Loan Amount</span><span>₹ {Number(form.loanAmount || 0).toLocaleString("en-IN")}</span></li>
-                <li><span>Tenure</span><span>{form.tenure} years</span></li>
+                <li><span>Tenure</span><span>{form.tenure} months</span></li>
                 <li><span>Interest</span><span>{form.interestRate}% p.a.</span></li>
                 <li><span>Down Payment</span><span>₹ {Number(form.downPayment || 0).toLocaleString("en-IN")}</span></li>
                 <li><span>Property</span><span>{form.propertyType} • ₹ {Number(form.propertyValue || 0).toLocaleString("en-IN")}</span></li>
                 <li><span>Property Address</span><span>{form.propertyAddress}, {form.propertyCity}, {form.propertyState} {form.propertyPincode}</span></li>
                 <li><span>Co-applicant</span><span>{form.coApplicant === "yes" ? `${form.coName} (${form.coRelation})` : "No"}</span></li>
-                <li><span>Declarations</span><span>
-                  Judgements: {form.hasJudgements} • Bankruptcy: {form.bankrupt} • Foreclosed: {form.foreclosed} • PEP: {form.politicallyExposed}
+                <li><span>Uploaded Documents</span><span>
+                  ID Proof: {form.idProof ? form.idProof.name : "N/A"} <br/>
+                  Income Proof: {form.incomeProof ? form.incomeProof.name : "N/A"} <br/>
+                  Address Proof: {form.addressProof ? form.addressProof.name : "N/A"} <br/>
+                  Sale Agreement: {form.saleAgreement ? form.saleAgreement.name : "N/A"}
                 </span></li>
               </ul>
-              <div className="consent">
-                <input type="checkbox" id="final-consent" name="agree" checked={form.agree} onChange={handleChange} />{" "}
-                <label htmlFor="final-consent">I confirm all details are correct.</label>
-              </div>
             </div>
           )}
 
@@ -744,7 +781,6 @@ if (submitted) {
             ) : (
               <button
                 className="btn btn-primary"
-                disabled={!form.agree}
                 onClick={() => setSubmitted(true)}
               >
                 Submit Application
