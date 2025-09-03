@@ -74,6 +74,8 @@ public class PersonalLoan {
     private String comment;
     private String action;
 
+    // Getters and Setters for all fields
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getApplicationId() { return applicationId; }
@@ -165,8 +167,6 @@ public class PersonalLoan {
     public String getAction() { return action; }
     public void setAction(String action) { this.action = action; }
 }
-
-
 
 
 
