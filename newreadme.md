@@ -1,11 +1,11 @@
-package loanorigination.loanApplication.model;
+package loanOrigination.loanApplication.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name = "loan_application")
+@Table(name = "personal_loan")
 public class PersonalLoan {
 
     @Id
@@ -14,6 +14,9 @@ public class PersonalLoan {
 
     @Column(name = "application_id", nullable = false)
     private String applicationId;
+
+    @Column(name = "status")
+    private String status;
 
     // Personal Info
     private String name;
@@ -25,11 +28,11 @@ public class PersonalLoan {
     private String aadharNumber;
     private String panNumber;
     private String gender;
+    private String residenceType;
     private String address;
     private String city;
     private String state;
     private String pincode;
-    private String residenceType;
     private String refName;
     private String refRelation;
     private String refContact;
@@ -40,10 +43,9 @@ public class PersonalLoan {
     private String employerName;
     private String employmentStart;
     private String designation;
-    private Integer workExperience;
+    private Integer totalworkExperience;
     private BigDecimal monthlyIncome;
     private BigDecimal otherIncome;
-    private Integer totalworkExperience;
 
     // Loan Details
     private BigDecimal loanAmount;
@@ -76,6 +78,8 @@ public class PersonalLoan {
     public void setId(Long id) { this.id = id; }
     public String getApplicationId() { return applicationId; }
     public void setApplicationId(String applicationId) { this.applicationId = applicationId; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getEmail() { return email; }
@@ -92,6 +96,8 @@ public class PersonalLoan {
     public void setPanNumber(String panNumber) { this.panNumber = panNumber; }
     public String getGender() { return gender; }
     public void setGender(String gender) { this.gender = gender; }
+    public String getResidenceType() { return residenceType; }
+    public void setResidenceType(String residenceType) { this.residenceType = residenceType; }
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
     public String getCity() { return city; }
@@ -100,8 +106,6 @@ public class PersonalLoan {
     public void setState(String state) { this.state = state; }
     public String getPincode() { return pincode; }
     public void setPincode(String pincode) { this.pincode = pincode; }
-    public String getResidenceType() { return residenceType; }
-    public void setResidenceType(String residenceType) { this.residenceType = residenceType; }
     public String getRefName() { return refName; }
     public void setRefName(String refName) { this.refName = refName; }
     public String getRefRelation() { return refRelation; }
@@ -118,14 +122,12 @@ public class PersonalLoan {
     public void setEmploymentStart(String employmentStart) { this.employmentStart = employmentStart; }
     public String getDesignation() { return designation; }
     public void setDesignation(String designation) { this.designation = designation; }
-    public Integer getWorkExperience() { return workExperience; }
-    public void setWorkExperience(Integer workExperience) { this.workExperience = workExperience; }
+    public Integer getTotalworkExperience() { return totalworkExperience; }
+    public void setTotalworkExperience(Integer totalworkExperience) { this.totalworkExperience = totalworkExperience; }
     public BigDecimal getMonthlyIncome() { return monthlyIncome; }
     public void setMonthlyIncome(BigDecimal monthlyIncome) { this.monthlyIncome = monthlyIncome; }
     public BigDecimal getOtherIncome() { return otherIncome; }
     public void setOtherIncome(BigDecimal otherIncome) { this.otherIncome = otherIncome; }
-    public Integer getTotalworkExperience() { return totalworkExperience; }
-    public void setTotalworkExperience(Integer totalworkExperience) { this.totalworkExperience = totalworkExperience; }
     public BigDecimal getLoanAmount() { return loanAmount; }
     public void setLoanAmount(BigDecimal loanAmount) { this.loanAmount = loanAmount; }
     public Integer getTenure() { return tenure; }
@@ -163,9 +165,10 @@ public class PersonalLoan {
 }
 
 
-CREATE TABLE loan_application(
+CREATE TABLE personal_loan(
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     application_id VARCHAR(50) NOT NULL,
+    status VARCHAR(30),
     name VARCHAR(100),
     email VARCHAR(100),
     phone VARCHAR(20),
@@ -174,11 +177,11 @@ CREATE TABLE loan_application(
     aadhar_number VARCHAR(20),
     pan_number VARCHAR(20),
     gender VARCHAR(10),
+    residence_type VARCHAR(50),
     address TEXT,
     city VARCHAR(50),
     state VARCHAR(50),
     pincode VARCHAR(10),
-    residence_type VARCHAR(50),
     ref_name VARCHAR(100),
     ref_relation VARCHAR(50),
     ref_contact VARCHAR(20),
@@ -187,7 +190,6 @@ CREATE TABLE loan_application(
     employer_name VARCHAR(100),
     employment_start VARCHAR(50),
     designation VARCHAR(50),
-    work_experience INT,
     total_work_experience INT,
     monthly_income DECIMAL(15,2),
     other_income DECIMAL(15,2),
@@ -208,4 +210,72 @@ CREATE TABLE loan_application(
     guarantor VARCHAR(3),
     comment TEXT,
     action VARCHAR(50)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO personal_loan (
+    application_id, status, name, email, phone, dob, marital_status,
+    aadhar_number, pan_number, gender, residence_type, address, city,
+    state, pincode, ref_name, ref_relation, ref_contact, ref_address,
+    employment, employer_name, employment_start, designation,
+    total_work_experience, monthly_income, other_income, loan_amount,
+    tenure, purpose, loan_nature, loan_usage, occupancy, interest_rate,
+    down_payment, assets, liabilities, existing_loans, id_proof,
+    income_proof, address_proof, guarantor, comment, action
+) VALUES (
+    'APP-12345',
+    'Submitted',
+    'Jeff',
+    'jane.doe@example.com',
+    '9876543210',
+    '1990-05-15',
+    'Married',
+    '123456789012',
+    'ABCDE1234F',
+    'male',
+    'Owned',
+    '123 Main Street',
+    'Bengaluru',
+    'Karnataka',
+    '560001',
+    'JDoe',
+    'Spouse',
+    '9876543211',
+    '123 Main Street, Bengaluru',
+    'Salaried',
+    'Tech Solutions',
+    '2018-01-10',
+    'Software Engineer',
+    7,
+    50000.00,
+    10000.00,
+    250000.00,
+    5,
+    'Home Renovation',
+    'Unsecured',
+    'Renovating kitchen and bathroom.',
+    'Self-occupied',
+    8.00,
+    10000.00,
+    '[{"type":"Savings","amount":"150000"}]',
+    '[{"type":"Credit Card","amount":"50000","emi":"2500"}]',
+    'yes',
+    'path/to/id_proof.pdf',
+    'path/to/income_proof.pdf',
+    'path/to/address_proof.pdf',
+    'yes',
+    'Application submitted via online portal.',
+    'Create Record'
 );
