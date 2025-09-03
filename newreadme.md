@@ -54,7 +54,7 @@ public class PersonalLoan {
     private String occupancy;
     private BigDecimal interestRate;
     private BigDecimal downPayment;
-    private String existingEmis;
+    private String existingLoans;
 
     // Financials
     private String assets; // Stored as a JSON string
@@ -146,8 +146,8 @@ public class PersonalLoan {
     public void setAssets(String assets) { this.assets = assets; }
     public String getLiabilities() { return liabilities; }
     public void setLiabilities(String liabilities) { this.liabilities = liabilities; }
-    public String getExistingEmis() { return existingEmis; }
-    public void setExistingEmis(String existingEmis) { this.existingEmis = existingEmis; }
+    public String getExistingLoans() { return existingLoans; }
+    public void setExistingLoans(String existingLoans) { this.existingLoans = existingLoans; }
     public String getIdProof() { return idProof; }
     public void setIdProof(String idProof) { this.idProof = idProof; }
     public String getIncomeProof() { return incomeProof; }
@@ -161,10 +161,6 @@ public class PersonalLoan {
     public String getAction() { return action; }
     public void setAction(String action) { this.action = action; }
 }
-
-
-
-
 
 
 CREATE TABLE loan_application(
@@ -205,7 +201,7 @@ CREATE TABLE loan_application(
     down_payment DECIMAL(15,2),
     assets TEXT,
     liabilities TEXT,
-    existing_emis VARCHAR(3),
+    existing_loans VARCHAR(3),
     id_proof TEXT,
     income_proof TEXT,
     address_proof TEXT,
@@ -213,5 +209,3 @@ CREATE TABLE loan_application(
     comment TEXT,
     action VARCHAR(50)
 );
-
-
