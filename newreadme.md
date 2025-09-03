@@ -1,56 +1,41 @@
-package loanorigination.loanApplication.service;
-
-import loanorigination.loanApplication.model.PersonalLoan;
-import java.util.List;
-
-public interface PersonalLoanService {
-    PersonalLoan saveApplication(PersonalLoan loan);
-    PersonalLoan updateApplication(PersonalLoan loan);
-    PersonalLoan getApplicationById(Long id);
-    List<PersonalLoan> getAllApplications();
-    void deleteApplication(Long id);
-}
-
-
-
-
-
-package loanorigination.loanApplication.service;
-
-import loanorigination.loanApplication.model.PersonalLoan;
-import loanorigination.loanApplication.repository.PersonalLoanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.List;
-
-@Service
-public class PersonalLoanServiceImpl implements PersonalLoanService {
-
-    @Autowired
-    private PersonalLoanRepository personalLoanRepository;
-
-    @Override
-    public PersonalLoan saveApplication(PersonalLoan loan) {
-        return personalLoanRepository.save(loan);
+onClick={async () => {
+    // Check if the user has agreed to the terms
+    if (!form.agree) {
+        alert("Please confirm all details are correct to submit your application.");
+        return;
     }
 
-    @Override
-    public PersonalLoan updateApplication(PersonalLoan loan) {
-        return personalLoanRepository.save(loan);
-    }
+    try {
+        const formData = {
+            ...form,
+            applicationId: `SCB-${Date.now()}`,
+            status: 'Submitted',
+            comment: 'Application submitted via web portal.',
+            action: 'Create Record',
+            assets: JSON.stringify(form.assets),
+            liabilities: JSON.stringify(form.liabilities),
+            idProof: form.idProof ? form.idProof.name : null,
+            incomeProof: form.incomeProof ? form.incomeProof.name : null,
+            addressProof: form.addressProof ? form.addressProof.name : null,
+        };
 
-    @Override
-    public PersonalLoan getApplicationById(Long id) {
-        return personalLoanRepository.findById(id).orElse(null);
-    }
+        // This is the crucial part: The URL must be correct.
+        const response = await fetch('http://localhost:8080/api/loans', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
 
-    @Override
-    public List<PersonalLoan> getAllApplications() {
-        return personalLoanRepository.findAll();
+        if (response.ok) {
+            setSubmitted(true);
+        } else {
+            alert("Application submission failed. Please try again.");
+            console.error('Server response:', await response.text());
+        }
+    } catch (error) {
+        alert("An error occurred while connecting to the server. Please check if the backend is running.");
+        console.error('Error submitting form:', error);
     }
-
-    @Override
-    public void deleteApplication(Long id) {
-        personalLoanRepository.deleteById(id);
-    }
-}
+}}
