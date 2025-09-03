@@ -1,4 +1,4 @@
-package loanorigination.loanApplication.model;
+package loanOrigination.loanApplication.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -15,11 +15,6 @@ public class PersonalLoan {
     @Column(name = "application_id", nullable = false)
     private String applicationId;
 
-    @Column(name = "amount_required")
-    private BigDecimal amountRequired;
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
     private String status;
     private String fullName;
     private String gender;
@@ -27,49 +22,50 @@ public class PersonalLoan {
     @Temporal(TemporalType.DATE)
     private Date dob;
 
-    private Integer age;
     private String phone;
     private String email;
     private String maritalStatus;
+    private String aadharNumber;
+    private String panNumber;
     private String address;
-    private String aadharNo;
-    private String panNo;
     private String city;
     private String state;
     private String pincode;
-
     private String residenceType;
+
     private String refName;
     private String refRelation;
     private String refContact;
     private String refAddress;
 
-    private String occupation;
-    private String employer;
+    private String employment;
+    private String employerName;
     private String designation;
 
     @Temporal(TemporalType.DATE)
-    private Date employmentStartDate;
+    private Date employmentStart;
 
-    private BigDecimal salary;
+    private BigDecimal monthlyIncome;
     private BigDecimal otherIncome;
     private Integer workExperience;
-    private String officeAddress;
     private Integer totalworkExperience;
 
+    private BigDecimal loanAmount;
     private Integer tenure;
-    private String loanPurpose;
+    private BigDecimal interestRate;
+    private String purpose;
     private String loanNature;
     private String loanUsage;
     private String guarantor;
-
     private String existingEmis;
     private String exitingLoanDetails;
 
-    private String photoPath;
-    private String identityProofPath;
-    private String salaryProofPath;
-    private String addressProofPath;
+    private String assets; // Storing as JSON string
+    private String liabilities; // Storing as JSON string
+
+    private String idProof;
+    private String incomeProof;
+    private String addressProof;
 
     private String comment;
     private String action;
@@ -80,10 +76,6 @@ public class PersonalLoan {
     public void setId(Long id) { this.id = id; }
     public String getApplicationId() { return applicationId; }
     public void setApplicationId(String applicationId) { this.applicationId = applicationId; }
-    public BigDecimal getAmountRequired() { return amountRequired; }
-    public void setAmountRequired(BigDecimal amountRequired) { this.amountRequired = amountRequired; }
-    public Date getDate() { return date; }
-    public void setDate(Date date) { this.date = date; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
     public String getFullName() { return fullName; }
@@ -92,20 +84,18 @@ public class PersonalLoan {
     public void setGender(String gender) { this.gender = gender; }
     public Date getDob() { return dob; }
     public void setDob(Date dob) { this.dob = dob; }
-    public Integer getAge() { return age; }
-    public void setAge(Integer age) { this.age = age; }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getMaritalStatus() { return maritalStatus; }
     public void setMaritalStatus(String maritalStatus) { this.maritalStatus = maritalStatus; }
+    public String getAadharNumber() { return aadharNumber; }
+    public void setAadharNumber(String aadharNumber) { this.aadharNumber = aadharNumber; }
+    public String getPanNumber() { return panNumber; }
+    public void setPanNumber(String panNumber) { this.panNumber = panNumber; }
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
-    public String getAadharNo() { return aadharNo; }
-    public void setAadharNo(String aadharNo) { this.aadharNo = aadharNo; }
-    public String getPanNo() { return panNo; }
-    public void setPanNo(String panNo) { this.panNo = panNo; }
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
     public String getState() { return state; }
@@ -122,28 +112,30 @@ public class PersonalLoan {
     public void setRefContact(String refContact) { this.refContact = refContact; }
     public String getRefAddress() { return refAddress; }
     public void setRefAddress(String refAddress) { this.refAddress = refAddress; }
-    public String getOccupation() { return occupation; }
-    public void setOccupation(String occupation) { this.occupation = occupation; }
-    public String getEmployer() { return employer; }
-    public void setEmployer(String employer) { this.employer = employer; }
+    public String getEmployment() { return employment; }
+    public void setEmployment(String employment) { this.employment = employment; }
+    public String getEmployerName() { return employerName; }
+    public void setEmployerName(String employerName) { this.employerName = employerName; }
     public String getDesignation() { return designation; }
     public void setDesignation(String designation) { this.designation = designation; }
-    public Date getEmploymentStartDate() { return employmentStartDate; }
-    public void setEmploymentStartDate(Date employmentStartDate) { this.employmentStartDate = employmentStartDate; }
-    public BigDecimal getSalary() { return salary; }
-    public void setSalary(BigDecimal salary) { this.salary = salary; }
+    public Date getEmploymentStart() { return employmentStart; }
+    public void setEmploymentStart(Date employmentStart) { this.employmentStart = employmentStart; }
+    public BigDecimal getMonthlyIncome() { return monthlyIncome; }
+    public void setMonthlyIncome(BigDecimal monthlyIncome) { this.monthlyIncome = monthlyIncome; }
     public BigDecimal getOtherIncome() { return otherIncome; }
     public void setOtherIncome(BigDecimal otherIncome) { this.otherIncome = otherIncome; }
     public Integer getWorkExperience() { return workExperience; }
     public void setWorkExperience(Integer workExperience) { this.workExperience = workExperience; }
-    public String getOfficeAddress() { return officeAddress; }
-    public void setOfficeAddress(String officeAddress) { this.officeAddress = officeAddress; }
     public Integer getTotalworkExperience() { return totalworkExperience; }
     public void setTotalworkExperience(Integer totalworkExperience) { this.totalworkExperience = totalworkExperience; }
+    public BigDecimal getLoanAmount() { return loanAmount; }
+    public void setLoanAmount(BigDecimal loanAmount) { this.loanAmount = loanAmount; }
     public Integer getTenure() { return tenure; }
     public void setTenure(Integer tenure) { this.tenure = tenure; }
-    public String getLoanPurpose() { return loanPurpose; }
-    public void setLoanPurpose(String loanPurpose) { this.loanPurpose = loanPurpose; }
+    public BigDecimal getInterestRate() { return interestRate; }
+    public void setInterestRate(BigDecimal interestRate) { this.interestRate = interestRate; }
+    public String getPurpose() { return purpose; }
+    public void setPurpose(String purpose) { this.purpose = purpose; }
     public String getLoanNature() { return loanNature; }
     public void setLoanNature(String loanNature) { this.loanNature = loanNature; }
     public String getLoanUsage() { return loanUsage; }
@@ -154,14 +146,16 @@ public class PersonalLoan {
     public void setExistingEmis(String existingEmis) { this.existingEmis = existingEmis; }
     public String getExitingLoanDetails() { return exitingLoanDetails; }
     public void setExitingLoanDetails(String exitingLoanDetails) { this.exitingLoanDetails = exitingLoanDetails; }
-    public String getPhotoPath() { return photoPath; }
-    public void setPhotoPath(String photoPath) { this.photoPath = photoPath; }
-    public String getIdentityProofPath() { return identityProofPath; }
-    public void setIdentityProofPath(String identityProofPath) { this.identityProofPath = identityProofPath; }
-    public String getSalaryProofPath() { return salaryProofPath; }
-    public void setSalaryProofPath(String salaryProofPath) { this.salaryProofPath = salaryProofPath; }
-    public String getAddressProofPath() { return addressProofPath; }
-    public void setAddressProofPath(String addressProofPath) { this.addressProofPath = addressProofPath; }
+    public String getAssets() { return assets; }
+    public void setAssets(String assets) { this.assets = assets; }
+    public String getLiabilities() { return liabilities; }
+    public void setLiabilities(String liabilities) { this.liabilities = liabilities; }
+    public String getIdProof() { return idProof; }
+    public void setIdProof(String idProof) { this.idProof = idProof; }
+    public String getIncomeProof() { return incomeProof; }
+    public void setIncomeProof(String incomeProof) { this.incomeProof = incomeProof; }
+    public String getAddressProof() { return addressProof; }
+    public void setAddressProof(String addressProof) { this.addressProof = addressProof; }
     public String getComment() { return comment; }
     public void setComment(String comment) { this.comment = comment; }
     public String getAction() { return action; }
@@ -171,22 +165,19 @@ public class PersonalLoan {
 
 
 
+
 CREATE TABLE loan_application(
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     application_id VARCHAR(50) NOT NULL,
-    amount_required DECIMAL(15,2),
-    date DATE,
-    status VARCHAR(30),
     full_name VARCHAR(100),
     gender VARCHAR(10),
     dob DATE,
-    age INT,
     phone VARCHAR(20),
     email VARCHAR(100),
     marital_status VARCHAR(20),
+    aadhar_number VARCHAR(20),
+    pan_number VARCHAR(20),
     address TEXT,
-    aadhar_no VARCHAR(20),
-    pan_no VARCHAR(20),
     city VARCHAR(50),
     state VARCHAR(50),
     pincode VARCHAR(10),
@@ -195,26 +186,27 @@ CREATE TABLE loan_application(
     ref_relation VARCHAR(50),
     ref_contact VARCHAR(20),
     ref_address TEXT,
-    occupation VARCHAR(50),
-    employer VARCHAR(100),
-    designation varchar(50),
-    employment_start_date DATE,
-    salary DECIMAL(15,2),
+    employment VARCHAR(50),
+    employer_name VARCHAR(100),
+    designation VARCHAR(50),
+    employment_start DATE,
+    monthly_income DECIMAL(15,2),
     other_income DECIMAL(15,2),
     work_experience INT,
     total_work_experience INT,
-    office_address TEXT,
+    loan_amount DECIMAL(15,2),
     tenure INT,
-    loan_purpose VARCHAR(255),
+    interest_rate DECIMAL(5,2),
+    purpose VARCHAR(255),
     loan_nature VARCHAR(50),
     loan_usage TEXT,
     guarantor VARCHAR(3),
     existing_emis VARCHAR(3),
-    exiting_loan_details TEXT,
-    photo_path VARCHAR(255),
-    identity_proof_path VARCHAR(255),
-    salary_proof_path VARCHAR(255),
-    address_proof_path VARCHAR(255),
+    assets TEXT,
+    liabilities TEXT,
+    id_proof TEXT,
+    income_proof TEXT,
+    address_proof TEXT,
     comment TEXT,
     action VARCHAR(50)
 );
