@@ -1,4 +1,4 @@
-package loanOrigination.loanApplication.model;
+package loanorigination.loanApplication.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -15,14 +15,20 @@ public class PersonalLoan {
     @Column(name = "application_id", nullable = false)
     private String applicationId;
 
-    @Column(name = "status")
-    private String status;
-
     @Column(name = "name")
     private String name;
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "aadhar_number")
+    private String aadharNumber;
+
+    @Column(name = "pan_number")
+    private String panNumber;
+    
+    @Column(name = "status")
+    private String status;
 
     @Column(name = "phone")
     private String phone;
@@ -32,12 +38,6 @@ public class PersonalLoan {
 
     @Column(name = "marital_status")
     private String maritalStatus;
-
-    @Column(name = "aadhar_number")
-    private String aadharNumber;
-
-    @Column(name = "pan_number")
-    private String panNumber;
 
     @Column(name = "gender")
     private String gender;
