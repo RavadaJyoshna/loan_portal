@@ -1,124 +1,570 @@
-CREATE TABLE home_Loan(
-id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-application_id VARCHAR(50) NOT NULL,
-loan_type VARCHAR(50),
-status VARCHAR(30),
-name VARCHAR(100),
-email VARCHAR(100),
-phone VARCHAR(20),
-dob DATE,
-age int,
-marital_status VARCHAR(20),
-aadhar_number VARCHAR (20)
-pan_number VARCHAR(20),
-gender VARCHAR(10),
-residence_type VARCHAR(50),
-address TEXT,
-city VARCHAR(50),
-state VARCHAR(50),
-pincode VARCHAR(10),
-ref_name VARCHAR(100),
-ref_relation VARCHAR(50),
-ref_contact VARCHAR(20),
-ref_address TEXT,
-employment VARCHAR(50)
-employer_name VARCHAR(100),
-employment_start VARCHAR(50),
-designation VARCHAR(50),
-work_experience INT,
-monthly_income DECIMAL(15,2),
-other_income DECIMAL(15,2),
-loan_amount DECIMAL(15,2),
-tenure INT,
-purpose VARCHAR (255),
-occupancy VARCHAR(50), 
-interest_rate DECIMAL(5,2), 
-down_payment DECIMAL(15,2),
-assets TEXT,
-liabilities TEXT, 
-existing_loan VARCHAR(3),
-property_type VARCHAR(100),
-property_value DECIMAL(15,2),
-property_address TEXT,
-property_city VARCHAR(50),
-property_state VARCHAR(50),
-property_pincode VARCHAR(10),
-co_applicant VARCHAR(3),
-id_proof TEXT, 
-income_proof TEXT, 
-address_proof TEXT,
-sale_agreement TEXT, 
-comment TEXT,
-action VARCHAR (50)
-);
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.time.LocalDate;
 
+@Entity
+@Table(name = "personal_loan")
+public class PersonalLoan {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(name = "application_id", nullable = false)
+    private String applicationId;
 
+    @Column(name = "status")
+    private String status;
 
+    @Column(name = "loan_type")
+    private String loanType;
 
+    @Column(name = "name")
+    private String name;
 
+    @Column(name = "email")
+    private String email;
 
+    @Column(name = "phone")
+    private String phone;
 
+    @Column(name = "app_date")
+    private LocalDate appDate;
 
+    @Column(name = "dob")
+    private LocalDate dob;
 
+    @Column(name = "age")
+    private Integer age;
 
+    @Column(name = "marital_status")
+    private String maritalStatus;
 
+    @Column(name = "aadhar_number")
+    private String aadharNumber;
 
+    @Column(name = "pan_number")
+    private String panNumber;
 
-CREATE TABLE vehicle_Loan(
-id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-application_id VARCHAR(50) NOT NULL,
-loan_type VARCHAR(50),
-status VARCHAR(30),
-name VARCHAR(100),
-email VARCHAR(100),
-phone VARCHAR(20),
-dob DATE,
-age int,
-marital_status VARCHAR(20),
-aadhar_number VARCHAR (20)
-pan_number VARCHAR(20),
-gender VARCHAR(10),
-residence_type VARCHAR(50),
-address TEXT,
-city VARCHAR(50),
-state VARCHAR(50),
-pincode VARCHAR(10),
-ref_name VARCHAR(100),
-ref_relation VARCHAR(50),
-ref_contact VARCHAR(20),
-ref_address TEXT,
-employment VARCHAR(50)
-employer_name VARCHAR(100),
-employment_start VARCHAR(50),
-designation VARCHAR(50),
-work_experience INT,
-monthly_income DECIMAL(15,2),
-other_income DECIMAL(15,2),
-loan_amount DECIMAL(15,2),
-tenure INT,
-purpose VARCHAR (255), 
-interest_rate DECIMAL(5,2), 
-down_payment DECIMAL(15,2),
-assets TEXT,
-liabilities TEXT, 
-existing_loan VARCHAR(3),
-vehicle_type VARCHAR(100),
-vehicle_make VARCHAR(100),
-vehicle_model VARCHAR(100),
-vehicle_year INT,
-vehicle_price DECIMAL(15,2),
-new_or_used VARCHAR(10)
-co_applicant VARCHAR(3),
-id_proof TEXT, 
-income_proof TEXT, 
-address_proof TEXT,
-dealer_invoice TEXT, 
-comment TEXT,
-action VARCHAR (50)
-);
+    @Column(name = "gender")
+    private String gender;
 
+    @Column(name = "residence_type")
+    private String residenceType;
 
+    @Column(name = "address")
+    private String address;
 
+    @Column(name = "city")
+    private String city;
 
+    @Column(name = "state")
+    private String state;
+
+    @Column(name = "pincode")
+    private String pincode;
+
+    @Column(name = "ref_name")
+    private String refName;
+
+    @Column(name = "ref_relation")
+    private String refRelation;
+
+    @Column(name = "ref_contact")
+    private String refContact;
+
+    @Column(name = "ref_address")
+    private String refAddress;
+
+    @Column(name = "employment")
+    private String employment;
+
+    @Column(name = "employer_name")
+    private String employerName;
+
+    @Column(name = "employment_start")
+    private String employmentStart;
+
+    @Column(name = "designation")
+    private String designation;
+
+    @Column(name = "total_work_experience")
+    private Integer totalWorkExperience;
+
+    @Column(name = "monthly_income")
+    private Double monthlyIncome;
+
+    @Column(name = "other_income")
+    private Double otherIncome;
+
+    @Column(name = "loan_amount")
+    private Double loanAmount;
+
+    @Column(name = "tenure")
+    private Integer tenure;
+
+    @Column(name = "purpose")
+    private String purpose;
+
+    @Column(name = "loan_nature")
+    private String loanNature;
+
+    @Column(name = "loan_usage")
+    private String loanUsage;
+
+    @Column(name = "occupancy")
+    private String occupancy;
+
+    @Column(name = "interest_rate")
+    private Double interestRate;
+
+    @Column(name = "down_payment")
+    private Double downPayment;
+
+    @Column(name = "assets")
+    private String assets;
+
+    @Column(name = "liabilities")
+    private String liabilities;
+
+    @Column(name = "existing_loans")
+    private String existingLoans;
+
+    @Column(name = "outstanding")
+    private Double outstanding;
+
+    @Column(name = "tenure_remaining")
+    private Integer tenureRemaining;
+
+    @Column(name = "id_proof")
+    private String idProof;
+
+    @Column(name = "income_proof")
+    private String incomeProof;
+
+    @Column(name = "address_proof")
+    private String addressProof;
+
+    @Column(name = "photo")
+    private String photo;
+
+    @Column(name = "guarantor")
+    private String guarantor;
+
+    @Column(name = "comment")
+    private String comment;
+
+    @Column(name = "action")
+    private String action;
+
+    // Default constructor is required for JPA
+    public PersonalLoan() {
+        // You can set fixed values here if needed
+    }
+
+    // --- All Getters and Setters ---
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public LocalDate getAppDate() {
+        return appDate;
+    }
+
+    public void setAppDate(LocalDate appDate) {
+        this.appDate = appDate;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getAadharNumber() {
+        return aadharNumber;
+    }
+
+    public void setAadharNumber(String aadharNumber) {
+        this.aadharNumber = aadharNumber;
+    }
+
+    public String getPanNumber() {
+        return panNumber;
+    }
+
+    public void setPanNumber(String panNumber) {
+        this.panNumber = panNumber;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getResidenceType() {
+        return residenceType;
+    }
+
+    public void setResidenceType(String residenceType) {
+        this.residenceType = residenceType;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
+
+    public String getRefName() {
+        return refName;
+    }
+
+    public void setRefName(String refName) {
+        this.refName = refName;
+    }
+
+    public String getRefRelation() {
+        return refRelation;
+    }
+
+    public void setRefRelation(String refRelation) {
+        this.refRelation = refRelation;
+    }
+
+    public String getRefContact() {
+        return refContact;
+    }
+
+    public void setRefContact(String refContact) {
+        this.refContact = refContact;
+    }
+
+    public String getRefAddress() {
+        return refAddress;
+    }
+
+    public void setRefAddress(String refAddress) {
+        this.refAddress = refAddress;
+    }
+
+    public String getEmployment() {
+        return employment;
+    }
+
+    public void setEmployment(String employment) {
+        this.employment = employment;
+    }
+
+    public String getEmployerName() {
+        return employerName;
+    }
+
+    public void setEmployerName(String employerName) {
+        this.employerName = employerName;
+    }
+
+    public String getEmploymentStart() {
+        return employmentStart;
+    }
+
+    public void setEmploymentStart(String employmentStart) {
+        this.employmentStart = employmentStart;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public Integer getTotalWorkExperience() {
+        return totalWorkExperience;
+    }
+
+    public void setTotalWorkExperience(Integer totalWorkExperience) {
+        this.totalWorkExperience = totalWorkExperience;
+    }
+
+    public Double getMonthlyIncome() {
+        return monthlyIncome;
+    }
+
+    public void setMonthlyIncome(Double monthlyIncome) {
+        this.monthlyIncome = monthlyIncome;
+    }
+
+    public Double getOtherIncome() {
+        return otherIncome;
+    }
+
+    public void setOtherIncome(Double otherIncome) {
+        this.otherIncome = otherIncome;
+    }
+
+    public Double getLoanAmount() {
+        return loanAmount;
+    }
+
+    public void setLoanAmount(Double loanAmount) {
+        this.loanAmount = loanAmount;
+    }
+
+    public Integer getTenure() {
+        return tenure;
+    }
+
+    public void setTenure(Integer tenure) {
+        this.tenure = tenure;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
+    public String getLoanNature() {
+        return loanNature;
+    }
+
+    public void setLoanNature(String loanNature) {
+        this.loanNature = loanNature;
+    }
+
+    public String getLoanUsage() {
+        return loanUsage;
+    }
+
+    public void setLoanUsage(String loanUsage) {
+        this.loanUsage = loanUsage;
+    }
+
+    public String getOccupancy() {
+        return occupancy;
+    }
+
+    public void setOccupancy(String occupancy) {
+        this.occupancy = occupancy;
+    }
+
+    public Double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(Double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public Double getDownPayment() {
+        return downPayment;
+    }
+
+    public void setDownPayment(Double downPayment) {
+        this.downPayment = downPayment;
+    }
+
+    public String getAssets() {
+        return assets;
+    }
+
+    public void setAssets(String assets) {
+        this.assets = assets;
+    }
+
+    public String getLiabilities() {
+        return liabilities;
+    }
+
+    public void setLiabilities(String liabilities) {
+        this.liabilities = liabilities;
+    }
+
+    public String getExistingLoans() {
+        return existingLoans;
+    }
+
+    public void setExistingLoans(String existingLoans) {
+        this.existingLoans = existingLoans;
+    }
+
+    public Double getOutstanding() {
+        return outstanding;
+    }
+
+    public void setOutstanding(Double outstanding) {
+        this.outstanding = outstanding;
+    }
+
+    public Integer getTenureRemaining() {
+        return tenureRemaining;
+    }
+
+    public void setTenureRemaining(Integer tenureRemaining) {
+        this.tenureRemaining = tenureRemaining;
+    }
+
+    public String getIdProof() {
+        return idProof;
+    }
+
+    public void setIdProof(String idProof) {
+        this.idProof = idProof;
+    }
+
+    public String getIncomeProof() {
+        return incomeProof;
+    }
+
+    public void setIncomeProof(String incomeProof) {
+        this.incomeProof = incomeProof;
+    }
+
+    public String getAddressProof() {
+        return addressProof;
+    }
+
+    public void setAddressProof(String addressProof) {
+        this.addressProof = addressProof;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getGuarantor() {
+        return guarantor;
+    }
+
+    public void setGuarantor(String guarantor) {
+        this.guarantor = guarantor;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+}
