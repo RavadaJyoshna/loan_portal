@@ -1,7 +1,7 @@
-package loanorigination.loanApplication.model;
+package loanOrigination.loanApplication.model;
 
-import jakarta.persistence.*; 
-import java.math.BigDecimal; 
+import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -18,9 +18,6 @@ public class PersonalLoan {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "loan_type")
-    private String loanType;
-
     @Column(name = "name")
     private String name;
 
@@ -30,14 +27,8 @@ public class PersonalLoan {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "app_date")
-    private Date appDate;
-
     @Column(name = "dob")
     private Date dob;
-
-    @Column(name = "age")
-    private Integer age;
 
     @Column(name = "marital_status")
     private String maritalStatus;
@@ -65,13 +56,13 @@ public class PersonalLoan {
 
     @Column(name = "pincode")
     private String pincode;
-    
+
     @Column(name = "ref_name")
     private String refName;
 
     @Column(name = "ref_relation")
     private String refRelation;
-    
+
     @Column(name = "ref_contact")
     private String refContact;
 
@@ -116,55 +107,45 @@ public class PersonalLoan {
 
     @Column(name = "occupancy")
     private String occupancy;
-
+    
     @Column(name = "interest_rate")
     private BigDecimal interestRate;
-
+    
     @Column(name = "down_payment")
     private BigDecimal downPayment;
-
+    
     @Column(name = "assets")
     private String assets;
-
+    
     @Column(name = "liabilities")
     private String liabilities;
-
+    
     @Column(name = "existing_loans")
     private String existingLoans;
-
-    @Column(name = "outstanding")
-    private BigDecimal outstanding;
-
-    @Column(name = "tenure_remaining")
-    private Integer tenureRemaining;
-
+    
     @Column(name = "id_proof")
     private String idProof;
-
+    
     @Column(name = "income_proof")
     private String incomeProof;
-
+    
     @Column(name = "address_proof")
     private String addressProof;
-
-    @Column(name = "photo")
-    private String photo;
-
+    
     @Column(name = "guarantor")
     private String guarantor;
-
+    
     @Column(name = "comment")
     private String comment;
 
     @Column(name = "action")
     private String action;
 
-    // Default constructor is required for JPA
+    // Default constructor
     public PersonalLoan() {
     }
 
-    // --- All Getters and Setters ---
-
+    // Getters and Setters for all fields
     public Long getId() {
         return id;
     }
@@ -187,14 +168,6 @@ public class PersonalLoan {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getLoanType() {
-        return loanType;
-    }
-
-    public void setLoanType(String loanType) {
-        this.loanType = loanType;
     }
 
     public String getName() {
@@ -221,28 +194,12 @@ public class PersonalLoan {
         this.phone = phone;
     }
 
-    public Date getAppDate() {
-        return appDate;
-    }
-
-    public void setAppDate(Date appDate) {
-        this.appDate = appDate;
-    }
-
     public Date getDob() {
         return dob;
     }
 
     public void setDob(Date dob) {
         this.dob = dob;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public String getMaritalStatus() {
@@ -493,22 +450,6 @@ public class PersonalLoan {
         this.existingLoans = existingLoans;
     }
 
-    public BigDecimal getOutstanding() {
-        return outstanding;
-    }
-
-    public void setOutstanding(BigDecimal outstanding) {
-        this.outstanding = outstanding;
-    }
-
-    public Integer getTenureRemaining() {
-        return tenureRemaining;
-    }
-
-    public void setTenureRemaining(Integer tenureRemaining) {
-        this.tenureRemaining = tenureRemaining;
-    }
-
     public String getIdProof() {
         return idProof;
     }
@@ -531,14 +472,6 @@ public class PersonalLoan {
 
     public void setAddressProof(String addressProof) {
         this.addressProof = addressProof;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
     }
 
     public String getGuarantor() {
