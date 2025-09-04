@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import axios from "axios";
 import "../LoanWizardFull.css";
 
@@ -549,7 +549,7 @@ export default function PersonalLoanWizard(accountSummary) {
             ))}
           </div>
 
-          {getStepContent(step)}
+          {submitted ? getStepContent(8) : getStepContent(step)}
 
           {/* NAVIGATION */}
           <div className="form-navigation">
