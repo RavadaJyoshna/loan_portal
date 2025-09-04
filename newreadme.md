@@ -1,10 +1,8 @@
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.time.LocalDate;
+package loanorigination.loanApplication.model;
+
+import jakarta.persistence.*; 
+import java.math.BigDecimal; 
+import java.util.Date;
 
 @Entity
 @Table(name = "personal_loan")
@@ -33,10 +31,10 @@ public class PersonalLoan {
     private String phone;
 
     @Column(name = "app_date")
-    private LocalDate appDate;
+    private Date appDate;
 
     @Column(name = "dob")
-    private LocalDate dob;
+    private Date dob;
 
     @Column(name = "age")
     private Integer age;
@@ -67,13 +65,13 @@ public class PersonalLoan {
 
     @Column(name = "pincode")
     private String pincode;
-
+    
     @Column(name = "ref_name")
     private String refName;
 
     @Column(name = "ref_relation")
     private String refRelation;
-
+    
     @Column(name = "ref_contact")
     private String refContact;
 
@@ -96,13 +94,13 @@ public class PersonalLoan {
     private Integer totalWorkExperience;
 
     @Column(name = "monthly_income")
-    private Double monthlyIncome;
+    private BigDecimal monthlyIncome;
 
     @Column(name = "other_income")
-    private Double otherIncome;
+    private BigDecimal otherIncome;
 
     @Column(name = "loan_amount")
-    private Double loanAmount;
+    private BigDecimal loanAmount;
 
     @Column(name = "tenure")
     private Integer tenure;
@@ -120,10 +118,10 @@ public class PersonalLoan {
     private String occupancy;
 
     @Column(name = "interest_rate")
-    private Double interestRate;
+    private BigDecimal interestRate;
 
     @Column(name = "down_payment")
-    private Double downPayment;
+    private BigDecimal downPayment;
 
     @Column(name = "assets")
     private String assets;
@@ -135,7 +133,7 @@ public class PersonalLoan {
     private String existingLoans;
 
     @Column(name = "outstanding")
-    private Double outstanding;
+    private BigDecimal outstanding;
 
     @Column(name = "tenure_remaining")
     private Integer tenureRemaining;
@@ -163,7 +161,6 @@ public class PersonalLoan {
 
     // Default constructor is required for JPA
     public PersonalLoan() {
-        // You can set fixed values here if needed
     }
 
     // --- All Getters and Setters ---
@@ -224,19 +221,19 @@ public class PersonalLoan {
         this.phone = phone;
     }
 
-    public LocalDate getAppDate() {
+    public Date getAppDate() {
         return appDate;
     }
 
-    public void setAppDate(LocalDate appDate) {
+    public void setAppDate(Date appDate) {
         this.appDate = appDate;
     }
 
-    public LocalDate getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(LocalDate dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
@@ -392,27 +389,27 @@ public class PersonalLoan {
         this.totalWorkExperience = totalWorkExperience;
     }
 
-    public Double getMonthlyIncome() {
+    public BigDecimal getMonthlyIncome() {
         return monthlyIncome;
     }
 
-    public void setMonthlyIncome(Double monthlyIncome) {
+    public void setMonthlyIncome(BigDecimal monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
     }
 
-    public Double getOtherIncome() {
+    public BigDecimal getOtherIncome() {
         return otherIncome;
     }
 
-    public void setOtherIncome(Double otherIncome) {
+    public void setOtherIncome(BigDecimal otherIncome) {
         this.otherIncome = otherIncome;
     }
 
-    public Double getLoanAmount() {
+    public BigDecimal getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(Double loanAmount) {
+    public void setLoanAmount(BigDecimal loanAmount) {
         this.loanAmount = loanAmount;
     }
 
@@ -456,19 +453,19 @@ public class PersonalLoan {
         this.occupancy = occupancy;
     }
 
-    public Double getInterestRate() {
+    public BigDecimal getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(Double interestRate) {
+    public void setInterestRate(BigDecimal interestRate) {
         this.interestRate = interestRate;
     }
 
-    public Double getDownPayment() {
+    public BigDecimal getDownPayment() {
         return downPayment;
     }
 
-    public void setDownPayment(Double downPayment) {
+    public void setDownPayment(BigDecimal downPayment) {
         this.downPayment = downPayment;
     }
 
@@ -496,11 +493,11 @@ public class PersonalLoan {
         this.existingLoans = existingLoans;
     }
 
-    public Double getOutstanding() {
+    public BigDecimal getOutstanding() {
         return outstanding;
     }
 
-    public void setOutstanding(Double outstanding) {
+    public void setOutstanding(BigDecimal outstanding) {
         this.outstanding = outstanding;
     }
 
